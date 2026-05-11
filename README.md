@@ -2,33 +2,28 @@
 This code is a small implementation of the basic Nagel-Schreckenberg Modell (NaSch). It does not take into account things like Velocity-Dependend-Randomization or braking lights or parallel execution.
 
 ## The Modell itself
-NaSch is a cellular automata. Thats a fancy way of saying we are looking at a 
-grid of "cells". Each cell can contain some state from a finite list of possible states. 
+NaSch is a modell that predicts how traffic jams can appear for apparently no reason. How it works is described in greater detail on the Wikipedia page: https://de.wikipedia.org/wiki/Nagel-Schreckenberg-Modell. The german page also has a great simple visualization on how the modell works. I used this heavily when implementing this software. 
 
-In my implementation I use a one dimensional grid that represents a road. This road then contains cars, identified by their speed or empty spaces. To initialize my implementation I am looking at the following parameters:
+## How to Run
+At the moment I need to clean up some stuff because this is still a work in progress. But if you want to run this yourself you need to have Julia installed (https://julialang.org/downloads/). Also you need to install the packages Plots.jl and Revise.jl. Easiest way is to run the REPL (open CMD/Terminal and type *julia*) and then run:
 
-- road_length -> This tells the programm how long the array is
-- cars -> Sets the amount of cars that are placed on the array
-- v_max -> The maximum Speed a car can have at any time
-- p_slow -> How likely a car is to randomly slow down
-- steps -> The amount of time the simulation is run
+```julia
+using Pkg
+Pkg.add("Revise")
+Pkg.add("Plots")
+```
 
-NaSch contains 4 simple steps that are as follows that all loop once over every car:
+To run the function open up */scripts/run_simulation.jl* and run the file. This will automatically save a visualization in the */plots* Directory. The parameters you can give are the following and in order:
 
-### Step 1:
-If a car is not yet at v_max then the speed will increase by 1.
+- road_length::Int  -> how many cells does the road contain
+- cars::Int         -> how many cars on randomly placed on the road 
+- v_max::Int        -> what is the maximum speed
+- p_slow::Float64   -> how likely do cars randomly slow down
+- steps::Int        -> how often does the simulation run
 
-### Step 2:
-Check how much space is ahead, if the space ahead is smaller then the current speed reduce the current speed to the gap.
-
-### Step 3:
-There is always a random chance that a car will slow down for no apparent reason, this will simulate this. A basic checks that slows down a given car by 1 if the random check is passed.
-
-### Step 4:
-Move the cars according to their speed value. If a car has speed 4 then it will move 4 spaces in this pass of the modell.
+Already in the plots directory are 4 simple plots. The names follow the order of parameters that the algorithm was run with. 
 
 ## Open Points:
-- add a history and plots
 - add better checks for data consistency
 - maybe minor performance/readability improvements 
 - make module structure easier for end user/include a how to run
